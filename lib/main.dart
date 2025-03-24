@@ -5,6 +5,7 @@ import 'screens/bus_ticket_screen.dart';
 import 'screens/payment_gateway_screen.dart';
 import 'screens/money_transfer_screen.dart';
 import 'screens/login_screen.dart';
+import 'screens/pdf_viewer_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,6 +28,9 @@ class MyApp extends StatelessWidget {
         '/bus-tickets': (context) => BusTicketScreen(),
         '/payment-gateway': (context) => PaymentGatewayScreen(),
         '/money-transfer': (context) => MoneyTransferScreen(), // New route
+        '/pdf-viewer': (context) => PDFViewerScreen(
+          pdfPath: ModalRoute.of(context)!.settings.arguments as String,
+        ),
       },
     );
   }
