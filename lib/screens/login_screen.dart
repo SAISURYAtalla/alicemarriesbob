@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../utils/native.dart';
+import '../utils/native.dart'; // For UsbManager
 
 class AppLockScreen extends StatefulWidget {
   const AppLockScreen({super.key});
@@ -19,11 +19,27 @@ class _AppLockScreenState extends State<AppLockScreen> {
 
   Future<void> _checkSmartCard() async {
     UsbManager usbManager = UsbManager();
-    var k2 = await usbManager.detectSmartCard();
-    bool detected = true?k2!=null:false;
+    var smartCard = await usbManager.detectSmartCard();
+    bool detected = smartCard != null;
     setState(() {
       isSmartCardDetected = detected;
     });
+
+    // Show snackbar for the detection status
+    if (!detected) {
+      _showSnackbar('No TrustToken detected. Please check your connection.');
+    } else {
+      _showSnackbar('TrustToken detected. You can now log in.');
+    }
+  }
+
+  void _showSnackbar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 2),
+      ),
+    );
   }
 
   @override
@@ -40,11 +56,14 @@ class _AppLockScreenState extends State<AppLockScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text("No Smart Card detected. Please check your connection."),
+              const Text("No TrustToken detected. Please check your connection."),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _checkSmartCard,
                 child: const Text("Retry"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blueAccent,
+                ),
               ),
             ],
           ),
@@ -52,21 +71,46 @@ class _AppLockScreenState extends State<AppLockScreen> {
       );
     }
 
-    return const MyHomePage(title: 'Play with TrustToken');
+    return const LoginPage(title: 'Login');
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key, required this.title});
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  final _textcontroller = TextEditingController();
+class _LoginPageState extends State<LoginPage> {
+  final _pinController = TextEditingController();
+
+  void _showSnackbar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  Future<void> _attemptLogin() async {
+    if (_pinController.text == '123456') {
+      UsbManager usbManager = UsbManager();
+      var loginResult = await usbManager.loginTrustToken(_pinController.text);
+      bool loginResult2 = true; // For testing purposes
+
+      if (loginResult2) {
+        _showSnackbar('Login successful!');
+        Navigator.pushNamed(context, '/home');
+      } else {
+        _showSnackbar('Failed to log in. Please try again.');
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,23 +118,29 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text('Click to login in the application'),
+            const Text('Enter your PIN to log in:', style: TextStyle(fontSize: 16)),
             const SizedBox(height: 10),
+            TextField(
+              controller: _pinController,
+              obscureText: true,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'PIN',
+              ),
+            ),
+            const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () async {
-                UsbManager s = new UsbManager();
-                var k2 = await s.loginTrustToken(_textcontroller.text);
-                print(k2);
-                Navigator.pushNamed(
-                  context, 
-                  '/home'
-                );
-              },
+              onPressed: _attemptLogin,
               child: const Text("Login"),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 25),
+                backgroundColor: Colors.blueAccent,
+              ),
             ),
           ],
         ),

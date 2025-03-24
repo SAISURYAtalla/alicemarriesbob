@@ -36,9 +36,9 @@ class MainActivity: FlutterActivity(), CoroutineScope {
             System.loadLibrary("native-lib")
         }
     }
-    val ACTION_USB_PERMISSION = "com.example.temp.USB_PERMISSION"
+    val ACTION_USB_PERMISSION = "com.example.alicemarriesbob.USB_PERMISSION"
     var fileDescriptor: Int = 0
-    private val CHANNEL = "com.example.temp/usb"
+    private val CHANNEL = "com.example.alicemarriesbob/usb"
     private var dialog: AlertDialog? = null
     private var certificate1: X509Certificate? = null
 
@@ -153,7 +153,7 @@ class MainActivity: FlutterActivity(), CoroutineScope {
     }
 
     private fun showDialog() {
-        dialog = AlertDialog.Builder(this, R.style.AlertDialogCustom)
+        dialog = AlertDialog.Builder(this)
             .setTitle("USB Token Disconnected")
             .setMessage("The USB token is not connected. Restart the app.")
             .setPositiveButton("OK") { _, _ -> finishAffinity() }
@@ -227,7 +227,7 @@ class MainActivity: FlutterActivity(), CoroutineScope {
 
     private val usbDisconnectedReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            if (intent.action == "com.example.temp.USB_DISCONNECTED") {
+            if (intent.action == "com.example.alicemarriesbob.USB_DISCONNECTED") {
                 showDialog()
             }
         }
@@ -235,7 +235,7 @@ class MainActivity: FlutterActivity(), CoroutineScope {
 
     private val usbConnectedReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            if (intent.action == "com.example.temp.USB_CONNECTED") {
+            if (intent.action == "com.example.alicemarriesbob.USB_CONNECTED") {
                 dismissDialog()
             }
         }
@@ -243,7 +243,7 @@ class MainActivity: FlutterActivity(), CoroutineScope {
 
     private  val certificateChangedReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            if (intent.action == "com.example.temp.CERTIFICATE_CHANGED") {
+            if (intent.action == "com.example.alicemarriesbob.CERTIFICATE_CHANGED") {
                 showDialogCertChanged()
             }
         }
@@ -254,8 +254,8 @@ class MainActivity: FlutterActivity(), CoroutineScope {
         super.onCreate(savedInstanceState)
         val serviceIntent = Intent(this, UsbMonitorService::class.java)
         startService(serviceIntent)
-        registerReceiver(usbDisconnectedReceiver, IntentFilter("com.example.temp.USB_DISCONNECTED"), Context.RECEIVER_EXPORTED)
-        registerReceiver(usbConnectedReceiver, IntentFilter("com.example.temp.USB_CONNECTED"), Context.RECEIVER_EXPORTED)
+        registerReceiver(usbDisconnectedReceiver, IntentFilter("com.example.alicemarriesbob.USB_DISCONNECTED"), Context.RECEIVER_EXPORTED)
+        registerReceiver(usbConnectedReceiver, IntentFilter("com.example.alicemarriesbob.USB_CONNECTED"), Context.RECEIVER_EXPORTED)
 
     }
 

@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: '/home',
+      initialRoute: '/payment-gateway',
       routes: {
         '/': (context) => AppLockScreen(),
         '/home': (context) => HomeScreen(),
