@@ -25,11 +25,11 @@ class _PaymentGatewayScreenState extends State<PaymentGatewayScreen> {
   }
 
   void _startUsbMonitoring() {
-    // Check USB connection every 1 second
+    // Check Trust Token connection every 1 second
     _usbCheckTimer = Timer.periodic(Duration(seconds: 1), (timer) async {
       int usbStatus = await usbManager.detectSmartCard();
       if (usbStatus == -1) {
-        // USB disconnected, stop the timer and abort the payment
+        // Trust Token disconnected, stop the timer and abort the payment
         _usbCheckTimer.cancel();
         setState(() {
           _isUsbConnected = false;

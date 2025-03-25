@@ -15,6 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _checkSmartCard();
   }
 
+  //Trust Token detection
   Future<void> _checkSmartCard() async {
     UsbManager usbManager = UsbManager();
     var k2 = await usbManager.detectSmartCard();
@@ -28,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Mobile Services'),
+        title: Text('AliceMarriesBob'),
         centerTitle: true,
         backgroundColor: Colors.blueAccent,
       ),
@@ -96,6 +97,13 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icons.monetization_on,
             label: 'Money Transfer',
             route: '/money-transfer',
+          ),
+          const SizedBox(height: 20),
+          _buildServiceButton(
+            context,
+            icon: Icons.monetization_on,
+            label: 'Download Statement',
+            route: '/pdf-statement',
           ),
         ],
       ),

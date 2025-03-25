@@ -5,6 +5,7 @@ import 'screens/bus_ticket_screen.dart';
 import 'screens/payment_gateway_screen.dart';
 import 'screens/money_transfer_screen.dart';
 import 'screens/login_screen.dart';
+import 'screens/pdf_statement_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -26,7 +27,8 @@ class MyApp extends StatelessWidget {
         '/recharge': (context) => RechargeScreen(),
         '/bus-tickets': (context) => BusTicketScreen(),
         '/payment-gateway': (context) => PaymentGatewayScreen(),
-        '/money-transfer': (context) => MoneyTransferScreen(), // New route
+        '/money-transfer': (context) => MoneyTransferScreen(),
+        '/pdf-statement': (context) => PdfStatementScreen(),
       },
     );
   }

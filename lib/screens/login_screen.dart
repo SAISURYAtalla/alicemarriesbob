@@ -16,7 +16,8 @@ class _AppLockScreenState extends State<AppLockScreen> {
     super.initState();
     _checkSmartCard();
   }
-
+ 
+  //Trust Token detection
   Future<void> _checkSmartCard() async {
     UsbManager usbManager = UsbManager();
     var smartCard = await usbManager.detectSmartCard();
