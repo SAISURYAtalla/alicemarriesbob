@@ -7,7 +7,7 @@ AliceMarriesBob is a mobile application that provides users with essential finan
 1. **Mobile Recharge** - Recharge your prepaid mobile phone instantly with multiple payment options.
 2. **Bus Tickets** - Book bus tickets conveniently with a user-friendly interface.
 3. **Money Transfer** - Securely send money to family and friends in just a few taps.
-4. **Download Statement** - View and download transaction statements directly from the app.
+4. **Secure Statement Download** – Easily view and download transaction statements with advanced security. Traditional PDFs rely on static passwords, making them vulnerable to brute-force attacks. Instead, we use a public-private key encryption mechanism, where the bank and user exchange digital certificates. This ensures only authorized users can decrypt and access sensitive data, enhancing security, preventing unauthorized access, and maintaining data integrity.
 
 ## Technologies Used
 - **Flutter** - Cross-platform mobile app development
@@ -39,9 +39,6 @@ To balance security and efficiency, we implement heartbeat monitoring only when 
    ```sh
    flutter run
    ```
-
-## Screenshots
-(Add relevant screenshots of the app's UI here.)
 
 ## Contribution
 Contributions are welcome! Please follow these steps:
