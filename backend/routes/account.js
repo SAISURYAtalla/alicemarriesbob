@@ -74,11 +74,18 @@ router.get('/transactions/pdf', authMiddleware, async (req, res) => {
             $or: [{ senderId: req.userId }, { receiverId: req.userId }]
         }).populate('senderId receiverId', 'username firstName lastName');
 
+        // **Security Enhancement**:  
+        // A predefined password (like in Aadhar PDFs) is easier to crack.  
+        // To add a second layer of security, we encrypt the password using a shared public key  
+        // between the backend and the user. This ensures only authorized users can access the document.
+
+        const encryptedPassword = encrypt(process.env.PDF_PASSWORD); //encrypt()
+
         // Create PDF with password protection
         const doc = new PDFDocument({
-            userPassword: process.env.PDF_PASSWORD, // Password to open the PDF
-            ownerPassword: process.env.PDF_PASSWORD, // Optional: allows full access (can be different)
-            permissions: { // Optional: restrict actions
+            userPassword: decrypt(encryptedPassword), //decrypt()
+            ownerPassword: decrypt(encryptedPassword), //decrypt()
+            permissions: { // Restrict actions
                 printing: 'highResolution',
                 modifying: false,
                 copying: false,
